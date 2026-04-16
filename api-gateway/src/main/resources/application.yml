@@ -1,0 +1,50 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: student-service
+              uri: http://localhost:8081
+              # uri: lb://STUDENT-PROFILE-SERVICE
+              predicates:
+                - Path=/students/**
+              filters:
+                - StripPrefix=1
+            - id: auth-service
+              uri: http://localhost:8082
+              # uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
+          discovery:
+            locator:
+              enabled: true
+      globalcors:
+        cors-configuration:
+          '[/**]':
+            allowedOrigins: 'http://localhost:3000'
+            allowedMethods: [GET, POST, PUT, DELETE]
+            allowedHeaders: '*'
+
+server:
+  port: 9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,gateway,env"
+  endpoint:
+    gateway:
+      access: unrestricted
+    env:
+      access: read-only
+    health:
+      show-details: always
