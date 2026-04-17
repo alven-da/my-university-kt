@@ -23,11 +23,6 @@ class StudentProfileController(
 
     @PutMapping("/{studentId}")
     fun updateStudentProfile(@PathVariable studentId: String, @RequestBody updateReq: UpdateStudentProfileDto): StudentProfile {
-        val profile: StudentProfile = studentProfileService.updateProfile(updateReq)
-
-        println("updateStudentProfile")
-        println(profile)
-
-        return profile
+        return studentProfileService.updateProfile(studentId,updateReq)
     }
 }

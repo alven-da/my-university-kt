@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test
 
 
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.eq
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.data.relational.core.sql.Update
 import org.springframework.test.web.servlet.MockMvc
 
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -75,7 +75,7 @@ class StudentProfileControllerTest {
         mockProfile.lastName = "Alinan"
         mockProfile.gender = "Male"
 
-        whenever(studentProfileService.updateProfile(any())).thenReturn(mockProfile)
+        whenever(studentProfileService.updateProfile(eq(studentId),any())).thenReturn(mockProfile)
 
         mockMvc.perform(put("/profile/$studentId")
             .contentType(MediaType.APPLICATION_JSON)
@@ -83,6 +83,4 @@ class StudentProfileControllerTest {
         .andExpect(status().isOk)
         .andExpect(jsonPath("$.firstName").value(firstName))
     }
-
-
 }
