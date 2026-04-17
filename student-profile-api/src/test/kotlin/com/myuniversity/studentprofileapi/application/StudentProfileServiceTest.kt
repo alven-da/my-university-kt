@@ -5,6 +5,7 @@ import com.myuniversity.studentprofileapi.adapter.out.IStudentProfileRepository
 import com.myuniversity.studentprofileapi.domain.StudentProfile
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.check
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -31,11 +32,13 @@ class StudentProfileServiceTest {
         mockDto.firstName = "Alvin"
         mockDto.lastName = "Pat"
 
-        studentProfileService.updateProfile(studentId, mockDto)
+        whenever(studentRepo.save(any())).thenAnswer { invocation ->
+            invocation.arguments[0] as StudentProfile
+        }
 
-        verify(studentRepo).save(check {
-            assertEquals("Alvin", it.firstName)
-            assertEquals("Pat", it.lastName)
-        })
+        val result = studentProfileService.updateProfile(studentId, mockDto)
+
+        assertEquals("Alvin", result.firstName)
+        assertEquals("Pat", result.lastName)
     }
 }

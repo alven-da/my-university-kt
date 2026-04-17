@@ -20,17 +20,17 @@ class StudentProfileService(
 
     fun updateProfile(studentId: String, updateDto: UpdateStudentProfileDto): StudentProfile {
         // TODO: to optimize querying i.e. upsert API from repo
-        val existing: StudentProfile = studentProfileRepo.findById(studentId)
+        val existing: StudentProfile? = studentProfileRepo.findById(studentId)
 
         // Copy to updated object
-        val updated: StudentProfile = existing.copy(
+        val updated: StudentProfile = existing?.copy(
             firstName = updateDto.firstName ?: existing.firstName,
             lastName = updateDto.lastName ?: existing.lastName,
             gender = updateDto.gender ?: existing.gender
-        )
+        )!!
 
-        studentProfileRepo.save(updated)
+        val savedAndUpdated = studentProfileRepo.save(updated)
 
-        return updated
+        return savedAndUpdated
     }
 }
