@@ -1,19 +1,16 @@
-package com.myuniversity.student.adapter.out.persistence
-
+package com.myuniversity.studentprofileapi.adapter.out.persistence
 
 import com.myuniversity.studentprofileapi.domain.StudentProfile
 import com.myuniversity.studentprofileapi.adapter.out.IStudentProfileRepository
-import com.myuniversity.studentprofileapi.adapter.out.persistence.StudentProfileEntity
-import com.myuniversity.studentprofileapi.adapter.out.persistence.StudentProfileSpringDataRepository
 import org.springframework.stereotype.Component
 
 @Component
 class StudentProfilePersistenceAdapter(
-    private val springRepository: StudentProfileSpringDataRepository
+    private val studentProfileSpringRepo: StudentProfileSpringDataRepository
 ) : IStudentProfileRepository {
 
     override fun findById(id: String): StudentProfile? {
-        return springRepository.findById(id).map { entity ->
+        return studentProfileSpringRepo.findById(id).map { entity ->
             StudentProfile(entity?.id, entity?.firstName, entity?.lastName, entity?.gender ?: "")
         }.orElse(null)
     }
@@ -25,7 +22,7 @@ class StudentProfilePersistenceAdapter(
             lastName = studentProfile.lastName,
             gender = studentProfile.gender
         )
-        val saved = springRepository.save(entity)
+        val saved = studentProfileSpringRepo.save(entity)
         return StudentProfile(saved.id, saved.firstName, saved.lastName, saved.gender ?: "")
     }
 }

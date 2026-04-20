@@ -1,6 +1,5 @@
 package com.myuniversity.studentprofileapi.adapter.out.persistence
 
-import com.myuniversity.student.adapter.out.persistence.StudentProfilePersistenceAdapter
 import com.myuniversity.studentprofileapi.domain.StudentProfile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

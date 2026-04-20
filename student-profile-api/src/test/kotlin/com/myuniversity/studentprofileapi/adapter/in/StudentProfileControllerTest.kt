@@ -10,9 +10,6 @@ import com.myuniversity.studentprofileapi.application.StudentProfileService
 import com.myuniversity.studentprofileapi.domain.StudentProfile
 
 import org.junit.jupiter.api.Test
-
-
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.eq
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -46,7 +43,7 @@ class StudentProfileControllerTest {
         mockProfile.lastName = "Alinan"
         mockProfile.gender = "Male"
 
-        `when`(studentProfileService.getProfile(studentId)).thenReturn(mockProfile)
+        whenever(studentProfileService.getProfile(studentId)).thenReturn(mockProfile)
 
         mockMvc.perform(get("/profile/$studentId")
             .contentType(MediaType.APPLICATION_JSON))
