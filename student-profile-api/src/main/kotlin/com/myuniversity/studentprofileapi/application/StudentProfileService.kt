@@ -3,6 +3,7 @@ package com.myuniversity.studentprofileapi.application
 import com.myuniversity.studentprofileapi.adapter.dto.UpdateStudentProfileDto
 import com.myuniversity.studentprofileapi.adapter.out.IStudentProfileRepository
 import com.myuniversity.studentprofileapi.domain.StudentProfile
+import com.myuniversity.studentprofileapi.exception.StudentNotFoundException
 import jakarta.persistence.EntityNotFoundException
 
 class StudentProfileService(
@@ -11,7 +12,7 @@ class StudentProfileService(
     private fun getStudentProfile(studentId: String): StudentProfile {
         return studentProfileRepo.findById(studentId)?.apply {
             println("Profile retrieved for $studentId")
-        } ?: throw EntityNotFoundException("Could not find student $studentId")
+        } ?: throw StudentNotFoundException(studentId)
     }
 
     fun getProfile(studentId: String): StudentProfile {

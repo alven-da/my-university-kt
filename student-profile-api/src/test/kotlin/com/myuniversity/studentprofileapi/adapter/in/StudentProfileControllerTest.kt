@@ -23,8 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(controllers = [StudentProfileController::class])
-class StudentProfileControllerTest {
-
+class StudentProfileControllerTest  {
 
     @Autowired
     private lateinit var mockMvc: MockMvc

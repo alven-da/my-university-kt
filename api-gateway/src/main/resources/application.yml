@@ -7,22 +7,28 @@ spring:
   cloud:
     gateway:
       server:
+        forward-headers-strategy: framework
         webflux:
           routes:
             - id: student-service
-              uri: http://localhost:8081
-              # uri: lb://STUDENT-PROFILE-SERVICE
+              uri: http://localhost:8081 # uri: lb://STUDENT-PROFILE-SERVICE
               predicates:
                 - Path=/students/**
               filters:
                 - StripPrefix=1
+                - TokenRelay
             - id: auth-service
-              uri: http://localhost:8082
-              # uri: lb://AUTH-SERVICE
+              uri: http://localhost:8082 # uri: lb://AUTH-SERVICE
               predicates:
                 - Path=/auth/**
               filters:
-                - StripPrefix=1
+                # - StripPrefix=1
+                - RewritePath=/auth/(?<segment>.*), /$\{segment}
+                - name: RequestRateLimiter
+                  args:
+                    redis-rate-limiter.replenishRate: 10
+                    redis-rate-limiter.burstCapacity: 20
+                    key-resolver: "#{@userKeyResolver}"
           discovery:
             locator:
               enabled: true
@@ -34,7 +40,7 @@ spring:
             allowedHeaders: '*'
 
 server:
-  port: 9090
+  port: 8080
 
 management:
   endpoints:

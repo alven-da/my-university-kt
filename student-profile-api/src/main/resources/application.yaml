@@ -9,11 +9,11 @@ spring:
   h2:
     console:
       enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update # Automatically creates tables based on your @Entity
-    show-sql: true # Helpful for learning: see the SQL in the logs
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      ddl-auto: update # Automatically creates tables based on your @Entity
+#    show-sql: true # Helpful for learning: see the SQL in the logs
 server:
   port: 8081
 
