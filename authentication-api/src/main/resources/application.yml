@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: authentication-api
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      schema-locations: "classpath:oauth2-authorization-schema.sql"
+      mode: always
+
+server:
+  port: 8082
+
+auth:
+  initial-client:
+    id: ${INITIAL_CLIENT_ID:test-client}
+    secret: ${INITIAL_CLIENT_SECRET:test-secret} # Loaded from Vault or Env
+    redirect-uri: ${INITIAL_CLIENT_REDIRECT:http://127.0.0.1:8080/login/oauth2/code/oidc-client}
+    scopes:
+      - openid
+      - profile
+
+auth-server:
+  # The gateway URL - not the authentication-api URL
+  issuer-url: "http://localhost:8080"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+  endpoint:
+    health:
+      show-details: always

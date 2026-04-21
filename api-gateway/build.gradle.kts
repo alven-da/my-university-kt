@@ -23,22 +23,34 @@ dependencies {
     implementation(project(":shared-lib"))
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    // Uncomment only if need to use a web client to call other services from the Gateway
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
-//    implementation("org.springframework.boot:spring-boot-starter-web")
-//    implementation("org.springframework.boot:spring-boot-h2console")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2")
 
-//    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.projectreactor:reactor-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("it.ozimov:embedded-redis:0.7.3")
+}
+
+/**
+ * Excluding boot-starter-logging (for now) to avoid the ff error:
+ * LoggerFactory is not a Logback LoggerContext but Logback is on the classpath.
+ * It conflicts with it.ozimov:embedded-redis
+ * */
+configurations {
+    all {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+        // Then re-add only what you need, OR more commonly:
+    }
 }
 
 dependencyManagement {
@@ -59,11 +71,3 @@ tasks.withType<Test> {
 
 
 tasks.register("prepareKotlinBuildScriptModel")
-
-//sourceSets {
-//    main {
-//        resources {
-//            srcDirs("src/main/resources")
-//        }
-//    }
-//}
