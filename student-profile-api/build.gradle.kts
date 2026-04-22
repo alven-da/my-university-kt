@@ -23,14 +23,19 @@ dependencies {
     implementation(project(":shared-lib"))
 
     /* Spring Boot */
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    // For testing
     runtimeOnly("com.h2database:h2")
+    // For production releases
+    runtimeOnly("org.postgresql:postgresql")
 
     /*  Unit testing libraries */
     testImplementation("org.springframework.boot:spring-boot-starter-test")

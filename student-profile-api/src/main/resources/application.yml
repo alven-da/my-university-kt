@@ -1,4 +1,11 @@
+server:
+  port: 8081
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${JWKS_URI:http://localhost:8082/oauth2/jwks}
   application:
     name: student-profile-api
   datasource:
@@ -14,8 +21,9 @@ spring:
 #    hibernate:
 #      ddl-auto: update # Automatically creates tables based on your @Entity
 #    show-sql: true # Helpful for learning: see the SQL in the logs
-server:
-  port: 8081
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 management:
   endpoints:
