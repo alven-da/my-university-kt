@@ -1,0 +1,42 @@
+services:
+  auth-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  auth-service:
+    build:
+      context: ./authentication-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/authdb
+      SPRING_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      AUTH_SERVER_ISSUER_URL: http://api-gateway:8080
+      INITIAL_CLIENT_ID: ${CLIENT_ID}
+      INITIAL_CLIENT_SECRET: ${CLIENT_SECRET}
+      INITIAL_CLIENT_REDIRECT: ${CLIENT_REDIRECT}
+    depends_on:
+      - auth-db
+
+  student-service:
+    build:
+      context: ./student-profile-api
+    depends_on:
+      - auth-service
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://auth-service:8082
+      SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://student-service:8081
+    depends_on:
+      - auth-service
+      - student-service
