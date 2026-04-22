@@ -2,10 +2,10 @@ spring:
   application:
     name: authentication-api
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1}
+    driver-class-name: ${SPRING_DRIVER_CLASS_NAME:org.h2.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
   sql:
     init:
       schema-locations: "classpath:oauth2-authorization-schema.sql"
@@ -25,7 +25,7 @@ auth:
 
 auth-server:
   # The gateway URL - not the authentication-api URL
-  issuer-url: "http://localhost:8080"
+  issuer-url: ${AUTH_SERVER_ISSUER_URL:http://localhost:8080}
 
 management:
   endpoints:
